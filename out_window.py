@@ -1,6 +1,6 @@
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.uic import loadUi
-from PyQt5.QtCore import pyqtSlot, QTimer, QDate, Qt
+from PyQt5.QtCore import  QTimer, QDate
 from PyQt5.QtWidgets import *
 import cv2
 import face_recognition
@@ -11,7 +11,7 @@ import csv
 import winsound
 import resource
 
-path = 'ImagesAttendance'
+path = './ImagesAttendance'
 
 
 class Ui_OutputDialog(QDialog):
@@ -183,8 +183,6 @@ class Ui_OutputDialog(QDialog):
                 winsound.Beep(1000, 2000)
 
 
-
-
             print(name)
             y1, x2, y2, x1 = faceLoc
             ### multipy in 4 if it was wrong
@@ -194,18 +192,6 @@ class Ui_OutputDialog(QDialog):
             cv2.putText(frame, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255, 255, 255), 1)
 
         return frame
-
-
-
-    def showdialog(self):
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Information)
-
-        msg.setText("This is a message box")
-        msg.setInformativeText("This is additional information")
-        msg.setWindowTitle("MessageBox demo")
-        msg.setDetailedText("The details are as follows:")
-        msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
 
 
     def ElapseList(self,name):
