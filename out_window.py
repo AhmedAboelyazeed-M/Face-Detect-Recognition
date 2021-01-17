@@ -185,7 +185,7 @@ class Ui_OutputDialog(QDialog):
 
             print(name)
             y1, x2, y2, x1 = faceLoc
-            ### multipy in 4 if it was wrong
+            ### multiply in 4 if it was wrong
 
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
             cv2.rectangle(frame, (x1, y2 - 20), (x2, y2), (0, 255, 0), cv2.FILLED)
@@ -197,7 +197,6 @@ class Ui_OutputDialog(QDialog):
     def ElapseList(self,name):
         with open('Attendance.csv', "r") as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
-            line_count = 2
 
             Time1 = datetime.datetime.now()
             Time2 = datetime.datetime.now()
@@ -206,12 +205,10 @@ class Ui_OutputDialog(QDialog):
                     if field in row:
                         if field == 'Clock In':
                             if row[0] == name:
-                                #print(f'\t ROW 0 {row[0]}  ROW 1 {row[1]} ROW2 {row[2]}.')
                                 Time1 = (datetime.datetime.strptime(row[1], '%y/%m/%d %H:%M:%S'))
                                 self.TimeList1.append(Time1)
                         if field == 'Clock Out':
                             if row[0] == name:
-                                #print(f'\t ROW 0 {row[0]}  ROW 1 {row[1]} ROW2 {row[2]}.')
                                 Time2 = (datetime.datetime.strptime(row[1], '%y/%m/%d %H:%M:%S'))
                                 self.TimeList2.append(Time2)
                                 #print(Time2)
@@ -225,13 +222,7 @@ class Ui_OutputDialog(QDialog):
         self.displayImage(self.image, self.encode_list, self.class_names, 1)
 
     def displayImage(self, image, encode_list, class_names, window=1):
-        """
-        :param image: frame from camera
-        :param encode_list: known face encoding list
-        :param class_names: known face names
-        :param window: number of window
-        :return:
-        """
+
         image = cv2.resize(image, (640, 480))
         try:
             image = self.face_rec_(image, encode_list, class_names)
