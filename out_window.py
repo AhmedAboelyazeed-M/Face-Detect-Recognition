@@ -1,13 +1,17 @@
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import pyqtSlot, QTimer, QDate, Qt
-from PyQt5.QtWidgets import QDialog,QMessageBox
+# from PyQt5.QtWidgets import QDialog,QMessageBox
+from PyQt5.QtWidgets import *
 import cv2
 import face_recognition
 import numpy as np
 import datetime
 import os
 import csv
+
+path = 'ImagesAttendance'
+
 
 class Ui_OutputDialog(QDialog):
     def __init__(self):
@@ -23,7 +27,7 @@ class Ui_OutputDialog(QDialog):
 
         self.image = None
 
-    @pyqtSlot()
+    # @pyqtSlot()
     def startVideo(self, camera_name):
         """
         :param camera_name: link of camera or usb camera
@@ -34,7 +38,7 @@ class Ui_OutputDialog(QDialog):
         else:
         	self.capture = cv2.VideoCapture(camera_name)
         self.timer = QTimer(self)  # Create Timer
-        path = 'ImagesAttendance'
+
         if not os.path.exists(path):
             os.mkdir(path)
         # known face encoding and known face name list
@@ -71,7 +75,6 @@ class Ui_OutputDialog(QDialog):
         def mark_attendance(name):
             """
             :param name: detected face known or unknown one
-            :return:
             """
             if self.ClockInButton.isChecked():
                 self.ClockInButton.setEnabled(False)
@@ -126,25 +129,57 @@ class Ui_OutputDialog(QDialog):
                                 print('Not clicked.')
                                 self.ClockOutButton.setEnabled(True)
 
-        # face recognition
+        def save_new_name(name):
+
+            if self.SaveNewButton.isChecked():
+                print("save clicked")
+                if (name == 'Unknown'):
+
+                    new_name, ok = QInputDialog.getText(self, 'Text Input Dialog', 'Enter New name:')
+
+                    if ok:
+
+                        img_name = "{}.png".format(new_name)
+                        cv2.imwrite(os.path.join(path, img_name), frame)
+                        print("{} is saved!".format(img_name))
+
+                        self.StatusLabel.setText('Just Added {} Wait for restart'.format(str(new_name)))
+                        self.NameLabel.setText(' {}'.format(str(new_name)))
+                        print("restarting!")
+
+                        Ui_OutputDialog.startVideo(self, str(1))
+
+                    else:
+                        print('Not saved.')
+
+        # face recognition~
         faces_cur_frame = face_recognition.face_locations(frame)
         encodes_cur_frame = face_recognition.face_encodings(frame, faces_cur_frame)
         # count = 0
         for encodeFace, faceLoc in zip(encodes_cur_frame, faces_cur_frame):
-            match = face_recognition.compare_faces(encode_list_known, encodeFace, tolerance=0.50)
+            # matches = face_recognition.compare_faces(encode_list_known, encodeFace, tolerance=0.50)
             face_dis = face_recognition.face_distance(encode_list_known, encodeFace)
-            name = "unknown"
+
             best_match_index = np.argmin(face_dis)
             # print("best match index:",best_match_index) ## comment
-            if match[best_match_index]:
+            if face_dis[best_match_index] < 0.50:
                 name = class_names[best_match_index].upper()
-                y1, x2, y2, x1 = faceLoc
-                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                cv2.rectangle(frame, (x1, y2 - 20), (x2, y2), (0, 255, 0), cv2.FILLED)
-                cv2.putText(frame, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255, 255, 255), 1)
-            mark_attendance(name)
+                mark_attendance(name)
+            else:
+                name = 'Unknown'
+                save_new_name(name)
+
+            print(name)
+            y1, x2, y2, x1 = faceLoc
+            ### multipy in 4 if it was wrong
+
+            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            cv2.rectangle(frame, (x1, y2 - 20), (x2, y2), (0, 255, 0), cv2.FILLED)
+            cv2.putText(frame, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255, 255, 255), 1)
 
         return frame
+
+
 
     def showdialog(self):
         msg = QMessageBox()
