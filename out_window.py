@@ -1,7 +1,6 @@
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import pyqtSlot, QTimer, QDate, Qt
-# from PyQt5.QtWidgets import QDialog,QMessageBox
 from PyQt5.QtWidgets import *
 import cv2
 import face_recognition
@@ -9,6 +8,7 @@ import numpy as np
 import datetime
 import os
 import csv
+import winsound
 
 path = 'ImagesAttendance'
 
@@ -94,7 +94,7 @@ class Ui_OutputDialog(QDialog):
                                 self.MinLabel.setText('')
 
                                 #self.CalculateElapse(name)
-                                print('Yes clicked and detected') ##comment
+                                print('Yes can Enter now...') ##comment
                                 self.Time1 = datetime.datetime.now()
                                 #print(self.Time1)
                                 self.ClockInButton.setEnabled(True)
@@ -141,6 +141,11 @@ class Ui_OutputDialog(QDialog):
 
                         img_name = "{}.png".format(new_name)
                         cv2.imwrite(os.path.join(path, img_name), frame)
+                        date_time_string = datetime.datetime.now().strftime("%y/%m/%d %H:%M:%S")
+                        with open('Attendance.csv', 'a') as f:
+
+                            f.writelines(f'\n{new_name},{date_time_string},Added In')
+                            self.ClockInButton.setChecked(False)
                         print("{} is saved!".format(img_name))
 
                         self.StatusLabel.setText('Just Added {} Wait for restart'.format(str(new_name)))
@@ -149,8 +154,12 @@ class Ui_OutputDialog(QDialog):
 
                         Ui_OutputDialog.startVideo(self, str(1))
 
+
                     else:
                         print('Not saved.')
+                        self.SaveNewButton.setEnabled(True)
+                        self.SaveNewButton.setChecked(False)
+
 
         # face recognition~
         faces_cur_frame = face_recognition.face_locations(frame)
@@ -165,9 +174,15 @@ class Ui_OutputDialog(QDialog):
             if face_dis[best_match_index] < 0.50:
                 name = class_names[best_match_index].upper()
                 mark_attendance(name)
+                self.SaveNewButton.setEnabled(False)
+
             else:
                 name = 'Unknown'
                 save_new_name(name)
+                winsound.Beep(1000, 2000)
+
+
+
 
             print(name)
             y1, x2, y2, x1 = faceLoc
