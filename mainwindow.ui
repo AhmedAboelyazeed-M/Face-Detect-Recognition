@@ -27,7 +27,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="resource.qrc">
-    <normaloff>:/icon/icon.png</normaloff>:/icon/icon.png</iconset>
+    <normaloff>:/icon/icom.png</normaloff>:/icon/icom.png</iconset>
   </property>
   <widget class="QLabel" name="logolabel">
    <property name="geometry">
@@ -35,28 +35,40 @@
      <x>0</x>
      <y>0</y>
      <width>500</width>
-     <height>133</height>
+     <height>161</height>
     </rect>
    </property>
    <property name="text">
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="resource.qrc">:/logo/logo.png</pixmap>
+    <pixmap resource="resource.qrc">:/logo/logo.jpg</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>160</y>
+     <y>170</y>
      <width>491</width>
      <height>80</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>1</number>
+    </property>
+    <property name="bottomMargin">
+     <number>7</number>
+    </property>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="spacing">
+       <number>4</number>
+      </property>
       <item alignment="Qt::AlignHCenter">
        <widget class="QLabel" name="filelabel">
         <property name="font">
@@ -83,7 +95,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Start</string>
+       <string>Start..... get ready!</string>
       </property>
      </widget>
     </item>

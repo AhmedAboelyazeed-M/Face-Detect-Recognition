@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>OutputDialog</class>
  <widget class="QDialog" name="OutputDialog">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -30,16 +33,16 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Face Recognition Attendance App</string>
+   <string>Face Recognition Attendance</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resource.qrc">
-    <normaloff>:/icon/icon.png</normaloff>:/icon/icon.png</iconset>
+    <normaloff>:/icon/icom.png</normaloff>:/icon/icom.png</iconset>
   </property>
   <widget class="QLabel" name="imgLabel">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>0</x>
      <y>10</y>
      <width>640</width>
      <height>480</height>

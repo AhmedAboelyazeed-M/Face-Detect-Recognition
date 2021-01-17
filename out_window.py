@@ -9,6 +9,7 @@ import datetime
 import os
 import csv
 import winsound
+import resource
 
 path = 'ImagesAttendance'
 

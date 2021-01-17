@@ -3,8 +3,8 @@ from PyQt5.uic import loadUi
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QApplication, QDialog
-
-from out_window import Ui_OutputDialog
+import resource
+from out_window import *
 
 
 class Ui_Dialog(QDialog):
